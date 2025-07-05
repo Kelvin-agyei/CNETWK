@@ -3,7 +3,7 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
@@ -15,7 +15,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: 'auth',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -47,12 +47,21 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // TODO: Check authentication status from storage/context
+  // For now, we'll default to false to show auth screens first
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="auth" />
+        <Stack.Screen name="(tabs)" />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="rocket" />
+        <Stack.Screen name="archivedMessages" />
+        <Stack.Screen name="exploreHeader" />
       </Stack>
     </ThemeProvider>
   );
